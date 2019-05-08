@@ -3,16 +3,35 @@ import { render } from "react-dom";
 
 import "./styles.css";
 
-interface Post {
-  title: string;
-}
-function App() {
-  const [post] = React.useState<Post | null>(null);
+import { LocationProvider, Router, Route, Link } from "./router";
 
+import { globalHistory } from "./router/history";
+const Home = ({ location }) => {
   return (
-    <div className="App">
-      <div>{post}</div>
+    <div>
+      Home
+      <div>we are at {location.pathname}</div>
+      <Link to="/about">to about</Link>
     </div>
+  );
+};
+const About = ({ location }) => {
+  return (
+    <div>
+      About
+      <div>we are at {location.pathname}</div>
+      <Link to="/">to home</Link>
+    </div>
+  );
+};
+function App() {
+  return (
+    <LocationProvider history={globalHistory}>
+      <Router>
+        <Route path="/" comp={Home} />
+        <Route path="/about" comp={About} />
+      </Router>
+    </LocationProvider>
   );
 }
 
